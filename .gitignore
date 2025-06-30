@@ -1,0 +1,24 @@
+# 🪵 Logs et fichiers temporaires
+*.log
+*.tmp
+*.bak
+
+# 🔐 Fichiers secrets et configs
+.env
+*.env
+.env.*
+docker_env/
+
+# 🐳 Docker artefacts (optionnels, si présents)
+*.tar
+*.img
+*.pid
+
+# 🧠 IDE / éditeurs
+.vscode/
+.idea/
+*.swp
+
+# 🖥️ Systèmes
+.DS_Store
+Thumbs.db

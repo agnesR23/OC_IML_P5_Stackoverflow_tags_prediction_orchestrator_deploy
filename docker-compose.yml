@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  flask_app:
+    image: agnesrdocker/app_flask:latest  # ← automatiquement remplacé par ton script
+    ports:
+      - "5001:5001"
+
+  streamlit_app:
+    image: agnesrdocker/app_streamlit:latest
+    ports:
+      - "8501:8501"
+    env_file:
+      - ./app_streamlit/.env

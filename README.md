@@ -13,11 +13,10 @@ Ce dépôt contient l’orchestration complète de ce système de prédiction au
 
 
 📁 Arborescence du dépôt :
-OC_IML_P5_Stackoverflow_tags_prediction_orchestrator_deploy/
-├── docker-compose.yml
-├── build_and_push.sh
-├── .gitignore
-└── README.md
+- `docker-compose.yml`
+- `build_and_push.sh`
+- `.gitignore`
+- `README.md`
 
 ## 🚀 Lancement rapide
 

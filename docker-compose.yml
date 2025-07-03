@@ -2,13 +2,17 @@ version: "3.8"
 
 services:
   flask_app:
-    image: agnesrdocker/app_flask:latest  # ← automatiquement remplacé par ton script
+    build: ../app_flask
     ports:
       - "5001:5001"
+    command: conda run -n flask_app_env python app.py  # <-- lance flask
+    environment:
+      - FLASK_ENV=development  # ou production selon besoin
 
   streamlit_app:
-    image: agnesrdocker/app_streamlit:latest
+    build: ../app_streamlit
     ports:
       - "8501:8501"
     env_file:
-      - ./app_streamlit/.env
+      - ../app_streamlit/.env
+    # Pas besoin de command, Dockerfile Streamlit l’a déjà

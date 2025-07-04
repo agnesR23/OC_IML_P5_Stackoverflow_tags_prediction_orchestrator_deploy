@@ -1,8 +1,7 @@
 # 🔖 Stack Overflow Tag Predictor  
-*Projet 5 – OpenClassrooms – Parcours Ingénieur Machine Learning*
+*Par Agnès Regaud – Projet 5 – OpenClassrooms – Parcours Ingénieur Machine Learning*
 
 
-🔖 Stack Overflow Tag Predictor
 Ce projet propose une solution de prédiction automatique de tags pour les questions Stack Overflow. Il comprend deux services dockerisés :
 
 🔧 Une API Flask qui retourne des prédictions de tags à partir d’une question.
@@ -34,14 +33,6 @@ docker-compose up --pull always
 
 API Flask : http://localhost:5001
 Dashboard Streamlit : http://localhost:8501
-
-📦 Références des services GitHub
-
-Les deux services utilisent des images Docker publiées sur Docker Hub, référencées dans le fichier docker-compose.yml.
-
-🐍 API Flask : OC_IML_P5_Stackoverflow_tags_prediction_api_flask
-
-📊 Dashboard Streamlit : OC_IML_P5_Stackoverflow_tags_prediction_dashboard_streamlit
 
 
 🧪 Tests

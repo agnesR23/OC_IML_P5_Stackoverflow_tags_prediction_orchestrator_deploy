@@ -1,0 +1,51 @@
+name: CI/CD - Build, Test & Deploy on EC2
+
+# Déclenchement sur push sur la branche principale (main)
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout le code complet du repo orchestrator (contenant docker-compose + sous-dossiers app_flask & app_streamlit)
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # 2. Build images Docker des deux applications (flask + streamlit)
+      - name: Build Docker images
+        working-directory: ./  # racine repo orchestrator
+        run: |
+          docker build -t app_flask_image ./app_flask
+          docker build -t app_streamlit_image ./app_streamlit
+
+      # 3. Lancer les tests unitaires Pytest sur l’API Flask
+      - name: Run Flask API tests
+        working-directory: ./app_flask
+        run: |
+          conda env create -f environment-tests.yml -n test_env
+          source $(conda info --base)/etc/profile.d/conda.sh
+          conda activate test_env
+          pytest --maxfail=1 --disable-warnings -q
+
+      # 4. Déployer sur l’instance EC2 via SSH (exécution commande git pull + docker-compose)
+      - name: Deploy to EC2 instance via SSH
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}              # IP publique ou DNS EC2
+          username: ${{ secrets.EC2_USER }}          # ex: ec2-user
+          key: ${{ secrets.EC2_SSH_KEY }}             # Clé privée SSH stockée en secret GitHub
+          port: 22
+          script: |
+            set -e  # stoppe en cas d'erreur
+            cd ~/app_orchestrator_deploy || exit 1
+            git reset --hard origin/main    # forcer reset pour éviter conflits
+            git pull origin main
+            docker-compose down
+            docker-compose up -d --build
+

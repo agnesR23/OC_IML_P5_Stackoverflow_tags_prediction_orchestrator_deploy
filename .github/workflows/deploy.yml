@@ -1,4 +1,4 @@
-name: Deploy to AWS EC2
+name: Deploy to AWS EC2 via S3
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build_and_deploy:
+  upload_to_s3_and_deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -28,35 +28,16 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-3
 
-      - name: Add Azure CIDR for GitHub runners
+      - name: Zip and upload app to S3
         run: |
-          aws ec2 authorize-security-group-ingress \
-            --group-id sg-0ab45f12d9fdef46b \
-            --protocol tcp \
-            --port 22 \
-            --cidr 20.0.0.0/8 \
-            --region eu-west-3
+          zip -r app.zip .
+          aws s3 cp app.zip s3://projet5-deploy-bucket/app.zip
 
-      - name: SSH to EC2 and deploy
+      - name: Trigger EC2 deployment
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ec2-user
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd ~/projet5_deploy/OC_IML_P5_Stackoverflow_tags_prediction_orchestrator_deploy
-            git pull origin main
-            export API_URL=${{ secrets.API_URL }}
-            export DOCKERIZED=${{ secrets.DOCKERIZED }}
-            docker-compose down
-            docker-compose up -d
-
-      - name: Remove Azure CIDR after deploy
-        if: always()
-        run: |
-          aws ec2 revoke-security-group-ingress \
-            --group-id sg-0ab45f12d9fdef46b \
-            --protocol tcp \
-            --port 22 \
-            --cidr 20.0.0.0/8 \
-            --region eu-west-3
+            /home/ec2-user/deploy_from_s3.sh

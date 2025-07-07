@@ -30,7 +30,7 @@ jobs:
 
       - name: Show runner public IP
         run: |
-        echo "IP publique du runner GitHub :"
+        echo "IP publique du runner GitHub : "
         curl -s https://ifconfig.me
 
 

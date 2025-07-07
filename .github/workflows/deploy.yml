@@ -26,7 +26,13 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-west-3   
+          aws-region: eu-west-3
+          
+      - name: Show runner public IP
+        run: |
+        echo "🌐 IP publique du runner GitHub :"
+        curl -s https://ifconfig.me
+
 
       - name: SSH to EC2 and deploy
         uses: appleboy/ssh-action@v0.1.7

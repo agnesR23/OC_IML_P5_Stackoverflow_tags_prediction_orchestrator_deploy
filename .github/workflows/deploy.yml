@@ -35,6 +35,8 @@ jobs:
           username: ec2-user  
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            echo "🌐 IP publique du runner GitHub :"
+            curl -s https://ifconfig.me
             cd ~/projet5_deploy/OC_IML_P5_Stackoverflow_tags_prediction_orchestrator_deploy
             git pull origin main
             export API_URL=${{ secrets.API_URL }}

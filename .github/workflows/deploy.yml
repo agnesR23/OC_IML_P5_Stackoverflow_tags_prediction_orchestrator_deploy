@@ -30,8 +30,8 @@ jobs:
 
       - name: Show runner public IP
         run: |
-        echo "IP publique du runner GitHub : "
-        curl -s https://ifconfig.me
+          echo "IP publique du runner GitHub : "
+          curl -s https://ifconfig.me
 
 
       - name: SSH to EC2 and deploy

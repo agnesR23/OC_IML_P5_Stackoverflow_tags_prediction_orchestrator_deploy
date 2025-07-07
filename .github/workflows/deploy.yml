@@ -37,6 +37,7 @@ jobs:
           script: |
             cd ~/projet5_deploy/OC_IML_P5_Stackoverflow_tags_prediction_orchestrator_deploy
             git pull origin main
+            export API_URL=${{ secrets.API_URL }}
+            export DOCKERIZED=${{ secrets.DOCKERIZED }}
             docker-compose down
-            docker-compose build
             docker-compose up -d

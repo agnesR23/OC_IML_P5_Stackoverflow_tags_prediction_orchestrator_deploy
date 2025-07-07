@@ -13,6 +13,8 @@ services:
     build: ../app_streamlit
     ports:
       - "8501:8501"
-    env_file:
-      - ../app_streamlit/.env
+    environment:
+      - API_URL=${API_URL}
+      - DOCKERIZED=${DOCKERIZED}
+
     # Pas besoin de command, Dockerfile Streamlit l’a déjà

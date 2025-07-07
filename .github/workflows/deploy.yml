@@ -31,7 +31,7 @@ jobs:
       - name: Add Azure CIDR for GitHub runners
         run: |
           aws ec2 authorize-security-group-ingress \
-            --group-id sg-xxxxxxxxxxxx \
+            --group-id sg-0ab45f12d9fdef46b \
             --protocol tcp \
             --port 22 \
             --cidr 20.0.0.0/8 \

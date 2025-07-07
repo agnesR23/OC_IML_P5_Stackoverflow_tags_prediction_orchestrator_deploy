@@ -28,24 +28,35 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-3
 
-      - name: Show runner public IP
+      - name: Add Azure CIDR for GitHub runners
         run: |
-          echo "IP publique du runner GitHub : "
-          curl -s https://ifconfig.me
-
+          aws ec2 authorize-security-group-ingress \
+            --group-id sg-xxxxxxxxxxxx \
+            --protocol tcp \
+            --port 22 \
+            --cidr 20.0.0.0/8 \
+            --region eu-west-3
 
       - name: SSH to EC2 and deploy
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.EC2_HOST }}
-          username: ec2-user  
+          username: ec2-user
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            echo "🌐 IP publique du runner GitHub :"
-            curl -s https://ifconfig.me
             cd ~/projet5_deploy/OC_IML_P5_Stackoverflow_tags_prediction_orchestrator_deploy
             git pull origin main
             export API_URL=${{ secrets.API_URL }}
             export DOCKERIZED=${{ secrets.DOCKERIZED }}
             docker-compose down
             docker-compose up -d
+
+      - name: Remove Azure CIDR after deploy
+        if: always()
+        run: |
+          aws ec2 revoke-security-group-ingress \
+            --group-id sg-0ab45f12d9fdef46b \
+            --protocol tcp \
+            --port 22 \
+            --cidr 20.0.0.0/8 \
+            --region eu-west-3

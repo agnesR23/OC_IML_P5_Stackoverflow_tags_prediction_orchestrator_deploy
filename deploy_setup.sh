@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # ================================
-# 🚀 Script de déploiement P5 StackOverflow
-# Supprime projet5_deploy, clone les 3 dépôts et relance Docker Compose
+# 🚀 Script autonome de déploiement P5 StackOverflow
+# Clone directement les 3 repos dans projet5_deploy et lance Docker Compose
 # ================================
 
 # 📂 Chemin du dossier projet
@@ -25,13 +25,13 @@ echo "📁 Création de $PROJECT_DIR..."
 mkdir -p $PROJECT_DIR
 cd $PROJECT_DIR
 
-# 📥 Clonage des dépôts GitHub
+# 📥 Clonage des 3 dépôts GitHub au même niveau
 echo "📥 Clonage des dépôts GitHub..."
 git clone https://github.com/agnesr23/OC_IML_P5_Stackoverflow_tags_prediction_api_flask.git
 git clone https://github.com/agnesr23/OC_IML_P5_Stackoverflow_tags_prediction_dashboard_streamlit.git
 git clone https://github.com/agnesr23/OC_IML_P5_Stackoverflow_tags_prediction_orchestrator_deploy.git
 
-# 🚀 Lancement de Docker Compose
+# 🚀 Lancement de Docker Compose depuis le repo orchestrator
 echo "🚀 Lancement de Docker Compose..."
 cd OC_IML_P5_Stackoverflow_tags_prediction_orchestrator_deploy
 docker compose up -d
